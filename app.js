@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const passport = require('passport');
 const session = require('express-session');
+const path = require('path');
 const MongoStore = require('connect-mongo');
 const keys = require('./config/keys');
 require('./config/passport')(passport);
