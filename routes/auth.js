@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const keys = require('../config/keys');
 const isAuth = require('../mw/isAuth');
 const User = require('../models/User');
 
@@ -57,19 +55,7 @@ router.post(
   '/login',
   passport.authenticate('local', { failureRedirect: '/' }),
   async (req, res) => {
-    const payload = {
-      user: {
-        id: req.user._id,
-      },
-    };
-
-    jwt.sign(payload, keys.jwtSecret, { expiresIn: '2d' }, (err, token) => {
-      if (err) throw err;
-      console.log(token);
-    });
-
-    const user = await User.findById(req.user._id).select('-local.password');
-    res.json(user);
+    res.redirect('/profile');
   }
 );
 
@@ -78,21 +64,8 @@ router.get('/facebook', passport.authenticate('facebook', { scope: 'email' }));
 
 router.get(
   '/facebook/callback',
-  passport.authenticate('facebook', {
-    failure: '/',
-  }),
+  passport.authenticate('facebook', { failure: '/' }),
   (req, res) => {
-    const payload = {
-      user: {
-        id: req.user._id,
-      },
-    };
-
-    jwt.sign(payload, keys.jwtSecret, { expiresIn: '2d' }, (err, token) => {
-      if (err) throw err;
-      console.log(token);
-    });
-
     res.redirect('/profile');
   }
 );
@@ -107,16 +80,6 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    const payload = {
-      user: {
-        id: req.user._id,
-      },
-    };
-
-    jwt.sign(payload, keys.jwtSecret, { expiresIn: '2d' }, (err, token) => {
-      if (err) throw err;
-      console.log(token);
-    });
     res.redirect('/profile');
   }
 );
