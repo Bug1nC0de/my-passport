@@ -16,7 +16,7 @@ const Header = ({ isAuth, trashUser }) => {
             <Navbar.Text>
               {isAuth && (
                 <Button variant="danger" onClick={logout}>
-                  Logout
+                  Logout!
                 </Button>
               )}
             </Navbar.Text>
