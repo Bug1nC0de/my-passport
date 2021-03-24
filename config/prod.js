@@ -6,4 +6,5 @@ module.exports = {
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   jwtSecret: process.env.jwtSecret,
   cookieKey: process.env.cookieKey,
+  url: process.env.url,
 };

@@ -42,7 +42,7 @@ module.exports = (passport) => {
       {
         clientID: keys.FACEBOOK_APP_ID,
         clientSecret: keys.FACEBOOK_APP_SECRET,
-        callbackURL: 'http://localhost:3000/auth/facebook/callback',
+        callbackURL: `${keys.url}/auth/facebook/callback`,
         profileFields: ['id', 'name', 'email'],
       },
       async (token, refreshToken, profile, done) => {
@@ -77,7 +77,7 @@ module.exports = (passport) => {
       {
         clientID: keys.GOOGLE_CLIENT_ID,
         clientSecret: keys.GOOGLE_CLIENT_SECRET,
-        callbackURL: 'http://localhost:3000/auth/google/callback',
+        callbackURL: `${keys.url}/auth/google/callback`,
       },
       async (accessToken, refreshToken, profile, done) => {
         //Check to see if user exists
