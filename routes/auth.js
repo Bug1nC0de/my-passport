@@ -134,14 +134,9 @@ router.get(
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-router.get(
-  '/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => {
-    res.redirect('/profile');
-  }
-);
-
+router.get('/google/callback', passport.authenticate('google'), (req, res) => {
+  res.redirect('/profile');
+});
 //Log User Out//
 router.get('/logout', (req, res) => {
   req.logout();
