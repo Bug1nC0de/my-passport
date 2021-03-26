@@ -22,7 +22,10 @@ export const register = ({ name, email, password }) => async (dispatch) => {
     const res = await axios.post('/auth/register', body, config);
     console.log(res.data);
   } catch (error) {
-    console.log(error);
+    const errors = error.response.data.errors;
+    if (errors) {
+      console.log(errors);
+    }
   }
 };
 
@@ -35,10 +38,13 @@ export const login = ({ username, password }) => async (dispatch) => {
   const body = JSON.stringify({ username, password });
   try {
     const res = await axios.post('/auth/login', body, config);
-
     dispatch({ type: LOGIN_USER, payload: res.data });
+    dispatch(fetchUser());
   } catch (error) {
-    console.log(error);
+    const errors = error.response.data.errors;
+    if (errors) {
+      console.log(errors);
+    }
   }
 };
 

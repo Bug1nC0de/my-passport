@@ -11,30 +11,48 @@ module.exports = (passport) => {
     done(null, user.id);
   });
 
-  passport.deserializeUser(function (id, done) {
-    User.findById(id, function (err, user) {
-      done(err, user);
+  passport.deserializeUser((id, done) => {
+    User.findById(id).then((user) => {
+      done(null, user);
     });
   });
 
-  //Local Strategy//
   passport.use(
-    new local(async (username, password, done) => {
-      const user = await User.findOne({ 'local.email': username });
-      if (!user) {
-        return done(err);
-      }
-
-      if (user) {
+    new local(function (username, password, done) {
+      User.findOne({ 'local.email': username }, function (err, user) {
+        if (err) {
+          return done(err, { msg: 'Invalid Credentials' });
+        }
+        if (!user) {
+          return done(null, false, { msg: 'Invalid Credetials' });
+        }
         const isMatch = bcrypt.compare(password, user.local.password);
         if (!isMatch) {
-          return done(null, false);
-        } else {
-          return done(null, user);
+          return done(null, false, { msg: 'Invalid credentiall' });
         }
-      }
+        return done(null, user);
+      });
     })
   );
+  //Local Strategy//
+  // passport.use(
+  //   new local(async (username, password, done) => {
+  //     console.log('passport local strategy');
+  //     const user = await User.findOne({ 'local.email': username });
+  //     if (!user) {
+  //       return done(err, { msg: 'Invalid Credentials' });
+  //     }
+
+  //     if (user) {
+  //       const isMatch = bcrypt.compare(password, user.local.password);
+  //       if (!isMatch) {
+  //         return done(null, false, { msg: 'Invalid Credentials' });
+  //       } else {
+  //         return done(null, user);
+  //       }
+  //     }
+  //   })
+  // );
 
   //Facebook Strategy//
   passport.use(
