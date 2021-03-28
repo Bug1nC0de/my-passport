@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
-const keys = require('../config/keys');
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const isAuth = require('../mw/isAuth');
@@ -69,7 +67,7 @@ router.post(
   }
 );
 
-//Login Logic//
+//Local Login Route//
 router.post(
   '/login',
   passport.authenticate('local', { failureRedirect: '/' }),
@@ -81,6 +79,7 @@ router.post(
 //Facebook Login Route//
 router.get('/facebook', passport.authenticate('facebook', { scope: 'email' }));
 
+//Facebook Callback Route//
 router.get(
   '/facebook/callback',
   passport.authenticate('facebook'),
@@ -96,10 +95,12 @@ router.get(
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
+//Google Callback Route//
 router.get('/google/callback', passport.authenticate('google'), (req, res) => {
   console.log('Google Callback: ', req.user);
   res.redirect('/profile');
 });
+
 //Log User Out//
 router.get('/logout', (req, res) => {
   req.logout();

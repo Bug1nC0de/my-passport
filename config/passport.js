@@ -17,6 +17,7 @@ module.exports = (passport) => {
     });
   });
 
+  //Local Strategy//
   passport.use(
     new local(function (username, password, done) {
       User.findOne({ 'local.email': username }, function (err, user) {
@@ -51,7 +52,6 @@ module.exports = (passport) => {
         });
 
         if (existingUser) {
-          console.log('User Exists: ', existingUser);
           return done(null, existingUser);
         }
 
@@ -66,7 +66,6 @@ module.exports = (passport) => {
         });
 
         await user.save();
-        console.log('We have a new user: ', user);
         return done(null, user);
       }
     )
@@ -100,7 +99,6 @@ module.exports = (passport) => {
         });
 
         await user.save();
-        console.log('We have a new user: ', user);
         return done(null, user);
       }
     )
