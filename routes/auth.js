@@ -81,10 +81,11 @@ router.get('/facebook', passport.authenticate('facebook', { scope: 'email' }));
 
 router.get(
   '/facebook/callback',
-  passport.authenticate('facebook', {
-    successRedirect: '/profile',
-    failureRedirect: '/',
-  })
+  passport.authenticate('facebook'),
+  (req, res) => {
+    console.log('Facebook Callback: ', req.user);
+    res.redirect('/profile');
+  }
 );
 
 //Google Login Route//
@@ -94,6 +95,7 @@ router.get(
 );
 
 router.get('/google/callback', passport.authenticate('google'), (req, res) => {
+  console.log('Google Callback: ', req.user);
   res.redirect('/profile');
 });
 //Log User Out//
