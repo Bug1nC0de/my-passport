@@ -52,6 +52,7 @@ module.exports = (passport) => {
         });
 
         if (existingUser) {
+          console.log('User Exists: ', existingUser);
           return done(null, existingUser);
         }
 
@@ -66,6 +67,7 @@ module.exports = (passport) => {
         });
 
         await user.save();
+        console.log('We have a new user: ', user);
         return done(null, user);
       }
     )
@@ -86,6 +88,7 @@ module.exports = (passport) => {
         });
 
         if (existingUser) {
+          console.log('User Exists: ', existingUser);
           return done(null, existingUser);
         }
         //If user does not Exist, Create New user//
@@ -99,6 +102,7 @@ module.exports = (passport) => {
         });
 
         await user.save();
+        console.log('We have a new user: ', user);
         return done(null, user);
       }
     )
