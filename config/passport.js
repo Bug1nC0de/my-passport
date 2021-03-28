@@ -6,18 +6,6 @@ const User = require('../models/User');
 const keys = require('./keys');
 
 module.exports = (passport) => {
-  //Serialize & Deserialize//
-  passport.serializeUser(function (user, done) {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser((id, done) => {
-    console.log('Current user id', id);
-    User.findById(id).then((user) => {
-      done(null, user);
-    });
-  });
-
   passport.use(
     new local(function (username, password, done) {
       User.findOne({ 'local.email': username }, function (err, user) {
@@ -88,7 +76,6 @@ module.exports = (passport) => {
         });
 
         if (existingUser) {
-          console.log('User Exists: ', existingUser);
           return done(null, existingUser);
         }
         //If user does not Exist, Create New user//

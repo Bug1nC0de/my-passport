@@ -7,6 +7,7 @@ const session = require('express-session');
 const path = require('path');
 const MongoStore = require('connect-mongo');
 const keys = require('./config/keys');
+const User = require('./models/User');
 require('./config/passport')(passport);
 
 connectDB();
@@ -29,6 +30,18 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+//Serialize & Deserialize//
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  console.log('Current user id', id);
+  User.findById(id).then((user) => {
+    done(null, user);
+  });
+});
 
 app.use((req, res, next) => {
   //console.log(req.session);
