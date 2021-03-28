@@ -76,47 +76,6 @@ router.post(
   }
 );
 
-// router.post(
-//   '/login',
-//   [
-//     check('username', 'Please include a valid email').isEmail(),
-//     check('password', 'Password is Required').exists(),
-//   ],
-//   async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return res.status(400).json({ errors: errors.array() });
-//     }
-//     const { username, password } = req.body;
-//     try {
-//       const user = await User.findOne({ 'local.email': username });
-//       if (!user) {
-//         return res
-//           .status(400)
-//           .json({ errors: [{ msg: 'Invalid Credentials' }] });
-//       }
-//       const isMatch = await bcrypt.compare(password, user.local.password);
-//       if (!isMatch) {
-//         return res
-//           .status(400)
-//           .json({ errors: [{ msg: 'Invalid Credentials' }] });
-//       }
-//       passport.authenticate('local')(req, res, function () {
-//         res.redirect('/profile');
-//       });
-//     } catch (error) {}
-//   }
-// );
-
-// router.post(
-//   '/login',
-//   passport.authenticate('local', { failureRedirect: '/' }),
-//   async (req, res) => {
-//     console.log('passport login');
-//     res.redirect('/profile');
-//   }
-// );
-
 //Facebook Login Route//
 router.get('/facebook', passport.authenticate('facebook', { scope: 'email' }));
 

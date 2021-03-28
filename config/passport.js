@@ -12,6 +12,7 @@ module.exports = (passport) => {
   });
 
   passport.deserializeUser((id, done) => {
+    console.log('Current user id', id);
     User.findById(id).then((user) => {
       done(null, user);
     });
@@ -34,25 +35,6 @@ module.exports = (passport) => {
       });
     })
   );
-  //Local Strategy//
-  // passport.use(
-  //   new local(async (username, password, done) => {
-  //     console.log('passport local strategy');
-  //     const user = await User.findOne({ 'local.email': username });
-  //     if (!user) {
-  //       return done(err, { msg: 'Invalid Credentials' });
-  //     }
-
-  //     if (user) {
-  //       const isMatch = bcrypt.compare(password, user.local.password);
-  //       if (!isMatch) {
-  //         return done(null, false, { msg: 'Invalid Credentials' });
-  //       } else {
-  //         return done(null, user);
-  //       }
-  //     }
-  //   })
-  // );
 
   //Facebook Strategy//
   passport.use(
