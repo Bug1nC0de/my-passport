@@ -12,7 +12,6 @@ module.exports = (passport) => {
   });
 
   passport.deserializeUser((id, done) => {
-    console.log('Current user id', id);
     User.findById(id).then((user) => {
       done(null, user);
     });

@@ -3,11 +3,10 @@ const app = express();
 const cors = require('cors');
 const connectDB = require('./config/db');
 const passport = require('passport');
-const session = require('express-session');
+const session = require('cookie-session');
 const path = require('path');
 const MongoStore = require('connect-mongo');
 const keys = require('./config/keys');
-const User = require('./models/User');
 require('./config/passport')(passport);
 
 connectDB();
@@ -17,23 +16,29 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: [keys.cookieKey],
-    resave: false,
-    saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl: keys.mongoURI }),
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24,
-      sameSite: 'strict',
-    },
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [keys.cookieKey],
   })
 );
+
+// app.use(
+//   session({
+//     secret: [keys.cookieKey],
+//     resave: false,
+//     saveUninitialized: true,
+//     store: MongoStore.create({ mongoUrl: keys.mongoURI }),
+//     cookie: {
+//       maxAge: 1000 * 60 * 60 * 24,
+//       sameSite: 'strict',
+//     },
+//   })
+// );
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
-  console.log(req.session);
-  //console.log('current user', req.user);
+  console.log('current user: ', req.user);
   next();
 });
 
