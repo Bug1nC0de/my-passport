@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: keys.cookieKey,
+    secret: [keys.cookieKey],
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: keys.mongoURI }),
