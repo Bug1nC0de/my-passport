@@ -34,7 +34,7 @@ module.exports = (passport) => {
         // instead of `compare` which will return promise
         const isMatch = bcrypt.compareSync(password, user.local.password);
         if (!isMatch) {
-          return done(null, false, { msg: 'Invalid credentiall' });
+          return done(null, false, { msg: 'Invalid credentials' });
         }
         return done(null, user);
       });
