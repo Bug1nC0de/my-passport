@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { Container, Row, Col, Form, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { register } from '../actions/auth';
+import { setNote } from '../actions/note';
 
-const Register = ({ register }) => {
+const Register = ({ register, setNote }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,7 +21,7 @@ const Register = ({ register }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
-      alert('Passwords do not match');
+      setNote('Passwords do not match', 'danger fixed-top');
     } else {
       register({ name, email, password });
     }
@@ -101,4 +102,4 @@ const Register = ({ register }) => {
   );
 };
 
-export default connect(null, { register })(Register);
+export default connect(null, { register, setNote })(Register);
