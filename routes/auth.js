@@ -82,10 +82,22 @@ router.post(
       if (!user) {
         return res.status(400).json(info);
       }
-      return res.json({
-        auth: true,
-        user,
-        message: 'User logged in'
+      /**
+       * You will have to manually call `req.login` here in order to generate session for user
+       * As you're relying on session cookie, so server will need to login the user
+       * and return its session in response headers
+       * http://www.passportjs.org/docs/authenticate/
+       */
+      req.login(user, function(err) {
+        if (err) {
+          return next(err);
+        }
+
+        return res.json({
+          auth: true,
+          user,
+          message: 'User logged in'
+        })
       })
     })(req, res, next); // Do not forget to pass these parameters to the strategy
   }
