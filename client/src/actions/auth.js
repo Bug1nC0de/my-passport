@@ -21,7 +21,10 @@ export const register = ({ name, email, password }) => async (dispatch) => {
 
   try {
     const res = await axios.post('/auth/register', body, config);
-    console.log(res.data);
+    const msgs = res.data.msg;
+    if (msgs) {
+      msgs.forEach((msg) => dispatch(setNote(msg.msg, 'success fixed-top')));
+    }
   } catch (error) {
     const errors = error.response.data.errors;
     console.log(errors);
