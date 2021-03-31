@@ -1,5 +1,6 @@
 import { FETCH_USER, TRASH_USER, LOGIN_USER } from './types';
 import axios from 'axios';
+import { setNote } from './note';
 
 export const fetchUser = () => async (dispatch) => {
   try {
@@ -23,8 +24,11 @@ export const register = ({ name, email, password }) => async (dispatch) => {
     console.log(res.data);
   } catch (error) {
     const errors = error.response.data.errors;
+    console.log(errors);
     if (errors) {
-      console.log(errors);
+      errors.forEach((error) =>
+        dispatch(setNote(error.msg, 'danger fixed-top'))
+      );
     }
   }
 };
@@ -45,6 +49,9 @@ export const login = ({ username, password }) => async (dispatch) => {
     const errors = error.response.data.errors;
     if (errors) {
       console.log(errors);
+      errors.forEach((error) =>
+        dispatch(setNote(error.msg, 'danger fixed-top'))
+      );
     }
   }
 };

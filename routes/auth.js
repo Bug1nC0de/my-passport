@@ -67,29 +67,24 @@ router.post(
   }
 );
 
-//Local Login Route//
-router.post(
-  '/login',
-  function (req, res, next) {
-    /**
-     * Here manually call local authentication strategy
-     * and you will receive:
-     * - err: which is `error` object
-     * - user: user object, which will be `false` if there is an error
-     * - info: your json object with detailed message
-     */
-    passport.authenticate('local', function(err, user, info) {
-      if (!user) {
-        return res.status(400).json(info);
+//Local User Login//
+router.post('/login', function (req, res, next) {
+  passport.authenticate('local', function (err, user, info) {
+    if (info) {
+      let err = info.message;
+      return res.status(400).json({ errors: [{ msg: err }] });
+    }
+    req.login(user, function (err) {
+      if (err) {
+        return next(err);
       }
-      return res.json({
-        auth: true,
-        user,
-        message: 'User logged in'
-      })
-    })(req, res, next); // Do not forget to pass these parameters to the strategy
-  }
-);
+    });
+    return res.json({
+      auth: true,
+      user,
+    });
+  })(req, res, next);
+});
 
 //Facebook Login Route//
 router.get('/facebook', passport.authenticate('facebook', { scope: 'email' }));
@@ -99,7 +94,6 @@ router.get(
   '/facebook/callback',
   passport.authenticate('facebook'),
   (req, res) => {
-    console.log('Facebook Callback: ', req.user);
     res.redirect('/profile');
   }
 );
@@ -112,7 +106,6 @@ router.get(
 
 //Google Callback Route//
 router.get('/google/callback', passport.authenticate('google'), (req, res) => {
-  console.log('Google Callback: ', req.user);
   res.redirect('/profile');
 });
 

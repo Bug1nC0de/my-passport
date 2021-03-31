@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 import Navbar from './components/Navbar';
+import Note from './components/Note';
+
 import Welcome from './components/Welcome';
 import Register from './components/Register';
 
@@ -21,6 +23,7 @@ function App() {
     <Provider store={store}>
       <Router>
         <Navbar />
+        <Note />
         <Route exact path="/" component={Welcome} />
         <section className="container">
           <Switch>

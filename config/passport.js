@@ -21,21 +21,20 @@ module.exports = (passport) => {
   passport.use(
     new local(function (username, password, done) {
       User.findOne({ 'local.email': username }, function (err, user) {
+        //check for errors//
         if (err) {
-          // Always be consistent with the pattern you're returning
-          // you return as follows (error, user, info)
-          // In which will be received in your 'login' route
-          return done(err, false, { msg: 'Invalid Credentials' });
+          return done(err, false, { message: 'Invalid Credentials' });
         }
+        //Check if the user exists//
         if (!user) {
-          return done(null, false, { msg: 'Invalid Credetials' });
+          return done(null, false, { message: 'Invalid Credentials' });
         }
-        // Used compareSync as it will return immediate response
-        // instead of `compare` which will return promise
+        //Check if the passwords match
         const isMatch = bcrypt.compareSync(password, user.local.password);
         if (!isMatch) {
-          return done(null, false, { msg: 'Invalid credentials' });
+          return done(null, false, { message: 'Invalid credentials' });
         }
+        //Successful Login return user//
         return done(null, user);
       });
     })
