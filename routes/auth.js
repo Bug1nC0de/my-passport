@@ -70,9 +70,24 @@ router.post(
 //Local Login Route//
 router.post(
   '/login',
-  passport.authenticate('local', { failureRedirect: '/' }),
-  function (req, res) {
-    res.redirect('/');
+  function (req, res, next) {
+    /**
+     * Here manually call local authentication strategy
+     * and you will receive:
+     * - err: which is `error` object
+     * - user: user object, which will be `false` if there is an error
+     * - info: your json object with detailed message
+     */
+    passport.authenticate('local', function(err, user, info) {
+      if (!user) {
+        return res.status(400).json(info);
+      }
+      return res.json({
+        auth: true,
+        user,
+        message: 'User logged in'
+      })
+    })(req, res, next); // Do not forget to pass these parameters to the strategy
   }
 );
 
